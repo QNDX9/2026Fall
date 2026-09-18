@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캠퍼스마켓 — 우리 학교 학생을 위한 중고마켓</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF9F3;
+    --bg-alt: #F1ECDF;
+    --ink: #172542;
+    --ink-soft: #4E5A73;
+    --accent: #FFCE33;
+    --accent-2: #FF6B45;
+    --line: rgba(23, 37, 66, 0.14);
+    --card-bg: #FFFFFF;
+    --card-shadow: rgba(23, 37, 66, 0.10);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10182B;
+      --bg-alt: #172038;
+      --ink: #F3EFE2;
+      --ink-soft: #AEB8D0;
+      --accent: #FFCE33;
+      --accent-2: #FF8663;
+      --line: rgba(243, 239, 226, 0.16);
+      --card-bg: #1A2440;
+      --card-shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #10182B;
+    --bg-alt: #172038;
+    --ink: #F3EFE2;
+    --ink-soft: #AEB8D0;
+    --accent: #FFCE33;
+    --accent-2: #FF8663;
+    --line: rgba(243, 239, 226, 0.16);
+    --card-bg: #1A2440;
+    --card-shadow: rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Space Grotesk', 'IBM Plex Sans KR', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .logo-mark {
+    width: 26px; height: 26px;
+    background: var(--ink);
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+  }
+  .logo-mark span {
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+  }
+
+  nav.links {
+    display: flex;
+    gap: 30px;
+    font-size: 0.94rem;
+    color: var(--ink-soft);
+  }
+  nav.links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: var(--accent-2); color: #1a1206; }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+
+  .menu-toggle { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 76px 0 60px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .kicker b { color: var(--ink); font-weight: 500; }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 4.4vw, 3.35rem);
+    line-height: 1.16;
+  }
+
+  .hero p.sub {
+    margin-top: 22px;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+
+  .hero-cta {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero-note {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  /* pinned card stack */
+  .board {
+    position: relative;
+    height: 380px;
+  }
+  .pin-card {
+    position: absolute;
+    width: 230px;
+    background: var(--card-bg);
+    border-radius: 4px;
+    padding: 16px 18px;
+    box-shadow: 0 14px 30px var(--card-shadow);
+    border: 1px solid var(--line);
+  }
+  .pin-card::before {
+    content: "";
+    position: absolute;
+    top: -6px; left: 20px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  }
+  .pin-card .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .pin-card .title { font-weight: 600; font-size: 0.96rem; margin-bottom: 6px; }
+  .pin-card .price { color: var(--accent-2); font-weight: 600; font-size: 0.94rem; }
+
+  .pin-card.c1 { top: 0; left: 10px; transform: rotate(-4deg); z-index: 3; }
+  .pin-card.c2 { top: 60px; left: 190px; transform: rotate(3deg); z-index: 2; }
+  .pin-card.c3 { top: 230px; left: 40px; transform: rotate(2deg); z-index: 1; }
+
+  /* ---------- Section shared ---------- */
+  section { padding: 78px 0; }
+  .section-alt { background: var(--bg-alt); }
+
+  .section-head { max-width: 620px; margin-bottom: 46px; }
+  .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.15rem); }
+  .section-head p { margin-top: 14px; color: var(--ink-soft); font-size: 1.02rem; }
+
+  /* ---------- Differentiators ---------- */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .diff-card {
+    background: var(--bg);
+    padding: 34px 28px;
+  }
+  .diff-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent-2);
+    margin-bottom: 18px;
+  }
+  .diff-card h3 { font-size: 1.14rem; margin-bottom: 10px; }
+  .diff-card p { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
+
+  /* ---------- Timeline ---------- */
+  .timeline-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 38px 34px 28px;
+  }
+  .timeline-wrap svg { width: 100%; height: auto; display: block; }
+  .timeline-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .timeline-labels .peak { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Steps ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .step { padding-top: 20px; border-top: 2px solid var(--line); }
+  .step-index {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .step h3 { font-size: 1.02rem; margin-bottom: 8px; }
+  .step p { color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
+
+  /* ---------- Trust ---------- */
+  .trust {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+  .trust-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .trust-list li {
+    display: flex;
+    gap: 14px;
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+  }
+  .trust-list li strong { color: var(--ink); font-weight: 600; }
+  .trust-dot {
+    flex: none;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 8px;
+  }
+  .trust-visual {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 30px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+  }
+  .trust-visual .row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px dashed var(--line); }
+  .trust-visual .row:last-child { border-bottom: none; }
+  .trust-visual .ok { color: #3F9A5E; }
+  .trust-visual .block { color: var(--accent-2); }
+
+  /* ---------- Waitlist ---------- */
+  .waitlist {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 20px;
+    padding: 56px 44px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .waitlist h2 { color: var(--bg); font-size: clamp(1.5rem, 3vw, 2rem); }
+  .waitlist p { color: color-mix(in srgb, var(--bg) 70%, transparent); margin-top: 12px; }
+
+  form.signup { display: flex; flex-direction: column; gap: 10px; }
+  .field-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  input[type="email"], input[type="text"] {
+    flex: 1;
+    min-width: 180px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.07);
+    color: var(--bg);
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  input::placeholder { color: rgba(255,255,255,0.45); }
+  form.signup .btn-primary {
+    background: var(--accent);
+    color: #1a1206;
+  }
+  form.signup .btn-primary:hover { background: var(--accent-2); }
+  .form-msg {
+    font-size: 0.85rem;
+    color: var(--accent);
+    min-height: 18px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 34px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    nav.links { display: none; }
+    .hero { grid-template-columns: 1fr; padding-top: 50px; }
+    .board { height: 300px; margin-top: 10px; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .trust { grid-template-columns: 1fr; }
+    .waitlist { grid-template-columns: 1fr; padding: 40px 26px; }
+  }
+  @media (max-width: 520px) {
+    .steps { grid-template-columns: 1fr; }
+    .pin-card { width: 190px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <span class="logo-mark"><span>CM</span></span>
+      캠퍼스마켓
+    </div>
+    <nav class="links">
+      <a href="#problem">왜 다른가</a>
+      <a href="#how">작동 방식</a>
+      <a href="#trust">안전</a>
+      <a href="#join">합류하기</a>
+    </nav>
+    <a href="#join" class="btn btn-primary">먼저 알림받기</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="kicker">캠퍼스 전용 중고마켓 · <b>1호 캠퍼스 오픈 준비 중</b></div>
+      <h1>전공책도 자취방 살림도,<br>우리 학교 학생에게 산다</h1>
+      <p class="sub">학교 이메일로 인증한 같은 학교 학생끼리만 거래해요. 내 학과 커리큘럼에 맞는 교재를 후배에게 자동으로 연결해드리고, 이사철엔 방 하나를 통째로 넘길 수 있어요.</p>
+      <div class="hero-cta">
+        <a href="#join" class="btn btn-primary">학교 이메일로 대기 등록</a>
+        <a href="#problem" class="btn btn-ghost">왜 필요한지 보기</a>
+      </div>
+      <div class="hero-note">현재 1개 캠퍼스에서 종강 시즌 오픈을 준비하고 있어요.</div>
+    </div>
+    <div class="board" aria-hidden="true">
+      <div class="pin-card c1">
+        <div class="tag">경제학과 · 미시경제학</div>
+        <div class="title">2024 개정판 미시경제학</div>
+        <div class="price">15,000원</div>
+      </div>
+      <div class="pin-card c2">
+        <div class="tag">원룸 이사 패키지</div>
+        <div class="title">책상+행거+전자레인지 세트</div>
+        <div class="price">80,000원</div>
+      </div>
+      <div class="pin-card c3">
+        <div class="tag">경영학과 · 재무관리</div>
+        <div class="title">3학년 1학기 전공 교재</div>
+        <div class="price">12,000원</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem" class="section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>학교 커뮤니티 게시판도, 동네 중고거래 앱도 아쉬운 지점이 있어요</h2>
+        <p>넓은 동네 기반 앱은 같은 학교 학생인지 알 수 없고, 학교 커뮤니티 게시판은 가격이 들쭉날쭉하고 원하는 매물을 찾기 어려워요. 캠퍼스마켓은 그 사이의 빈틈을 채워요.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="diff-num">01</div>
+          <h3>학과 커리큘럼 매칭</h3>
+          <p>학과·학번별 전공 교재를 등록하면, 같은 과목을 듣는 후배에게 자동으로 알림이 가요. 검색할 필요 없이 필요한 사람에게 먼저 연결돼요.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-num">02</div>
+          <h3>원룸 이사 패키지</h3>
+          <p>졸업생이나 교환학생이 책상, 침대, 가전을 한 번에 넘기는 이사 패키지 카테고리. 신입생은 한 번의 거래로 자취방을 채워요.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-num">03</div>
+          <h3>학교 인증 거래</h3>
+          <p>학교 이메일 인증을 거친 같은 학교 학생끼리만 거래가 열려요. 등록 단계에서 금지 품목은 자동으로 걸러져요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cycle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>거래는 학기를 따라 움직여요</h2>
+        <p>개강과 종강, 두 시즌에 거래가 집중돼요. 캠퍼스마켓은 이 주기에 맞춰 알림과 추천을 미리 보내드려요.</p>
+      </div>
+      <div class="timeline-wrap">
+        <svg viewBox="0 0 1000 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="학기 중 거래량 변화 그래프">
+          <polyline points="20,170 140,60 260,150 420,175 560,160 680,60 800,150 960,180"
+            fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="140" cy="60" r="6" fill="var(--accent-2)"/>
+          <circle cx="680" cy="60" r="6" fill="var(--accent-2)"/>
+          <line x1="140" y1="60" x2="140" y2="200" stroke="var(--line)" stroke-dasharray="4 4"/>
+          <line x1="680" y1="60" x2="680" y2="200" stroke="var(--line)" stroke-dasharray="4 4"/>
+          <text x="140" y="42" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="13">개강 피크</text>
+          <text x="680" y="42" text-anchor="middle" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="13">종강 피크</text>
+        </svg>
+        <div class="timeline-labels">
+          <span>개강 직전</span>
+          <span class="peak">개강 2주</span>
+          <span>학기 중</span>
+          <span>기말고사</span>
+          <span class="peak">종강 2주</span>
+          <span>방학</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>이렇게 거래해요</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-index">1</div>
+          <h3>학교 이메일 인증</h3>
+          <p>학교 메일로 가입하면 같은 학교 학생만 볼 수 있는 마켓이 열려요.</p>
+        </div>
+        <div class="step">
+          <div class="step-index">2</div>
+          <h3>사진 찍고 등록</h3>
+          <p>사진만 찍으면 품목과 상태를 인식해 설명과 가격을 제안해요.</p>
+        </div>
+        <div class="step">
+          <div class="step-index">3</div>
+          <h3>필요한 사람과 매칭</h3>
+          <p>전공 교재는 같은 과목 수강생에게, 자취용품은 근처 학생에게 먼저 보여요.</p>
+        </div>
+        <div class="step">
+          <div class="step-index">4</div>
+          <h3>캠퍼스에서 직거래</h3>
+          <p>학교 안에서 만나 안전하게 거래를 마무리해요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust">
+    <div class="wrap trust">
+      <div>
+        <div class="section-head" style="margin-bottom: 24px;">
+          <h2>신뢰할 수 있는 거래를 먼저 설계했어요</h2>
+        </div>
+        <ul class="trust-list">
+          <li><span class="trust-dot"></span><span><strong>학교 인증</strong>을 거치지 않으면 어떤 매물도 볼 수 없어요.</span></li>
+          <li><span class="trust-dot"></span><span><strong>주류·담배·콘택트렌즈</strong> 등 개인 간 판매가 금지된 품목은 등록 단계에서 자동으로 막아요.</span></li>
+          <li><span class="trust-dot"></span><span><strong>교재·원룸가구·자취용품</strong>으로 카테고리를 제한해 신뢰도를 지켜요.</span></li>
+        </ul>
+      </div>
+      <div class="trust-visual" aria-hidden="true">
+        <div class="row"><span>전공서적 등록</span><span class="ok">통과</span></div>
+        <div class="row"><span>원룸 가구 등록</span><span class="ok">통과</span></div>
+        <div class="row"><span>주류 판매 시도</span><span class="block">차단됨</span></div>
+        <div class="row"><span>콘택트렌즈 등록 시도</span><span class="block">차단됨</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" class="section-alt">
+    <div class="wrap">
+      <div class="waitlist">
+        <div>
+          <h2>1호 캠퍼스 오픈, 가장 먼저 알려드려요</h2>
+          <p>학교 이메일을 남겨주시면 캠퍼스마켓이 우리 학교에서 열릴 때 가장 먼저 초대해드려요.</p>
+        </div>
+        <form class="signup" id="signup-form">
+          <div class="field-row">
+            <input type="text" id="school" placeholder="학교 이름" required>
+          </div>
+          <div class="field-row">
+            <input type="email" id="email" placeholder="학교 이메일 주소" required>
+            <button type="submit" class="btn btn-primary">대기 등록</button>
+          </div>
+          <div class="form-msg" id="form-msg"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 캠퍼스마켓</span>
+  <span>같은 학교 학생을 위한, 학기를 따라가는 중고마켓</span>
+</footer>
+
+<script>
+  document.getElementById('signup-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var school = document.getElementById('school').value.trim();
+    var msg = document.getElementById('form-msg');
+    msg.textContent = school
+      ? school + ' 학생으로 대기 등록되었어요. 오픈 소식을 이메일로 보내드릴게요.'
+      : '대기 등록되었어요. 오픈 소식을 이메일로 보내드릴게요.';
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
